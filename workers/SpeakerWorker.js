@@ -7,7 +7,7 @@ const FCM = require('fcm-node');
 // 안드로이드 App이 적절한 구현절차를 통해서 생성해야 하는 값이다.
 // 안드로이드 단말에서 Node server로 POST방식 전송 후,
 // Node서버는 이 값을 DB에 보관하고 있으면 된다.
-const client_token = '';
+const client_token = 'e0gaUhEbtHA:APA91bFB4-I23a_DyOXAqFqu2lP4imLZByD0K3TqkIGAuFEoLdL0uTquyt82qX4yOISedparIx6zTQkdLMBscgT_lYyj-QBHLAMQdsqu-w0nyUTfhU9t2NO6ri3k2nndRRrXbooxgc-L';
 
 const message = {  
     to: client_token,                           // 수신 대상 (token)
@@ -33,7 +33,7 @@ exports.init = () => {
       return;
     }
     console.log('Push 메시지 발송 성공 : ' + response);
-  })
+  });
   
   amqp.connect('amqp://localhost', function(err, conn) {
     conn.createChannel(function(err, ch) {

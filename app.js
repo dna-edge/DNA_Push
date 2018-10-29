@@ -19,47 +19,8 @@ app.use(cookieParser());
 require('dotenv').config();
 global.utils = require('./utils/global');
 
-let server, corsOptions;
-switch(process.env.NODE_ENV){
-  case 'development':    
-    corsOptions = {
-      origin: 'http://localhost:9010',
-      credentials : true
-    };
-    app.use(cors(corsOptions));
-    server = http.Server(app);    
-    break;
-
-  case 'production':
-    corsOptions = {
-      origin: 'https://dna.soyoungpark.me',
-      credentials : true
-    };
-    app.use(cors(corsOptions));
-    // Certificate
-    try {
-      const privateKey = fs.readFileSync('../SSL/privkey.pem', 'utf8');
-      const certificate = fs.readFileSync('../SSL/cert.pem', 'utf8');
-      const ca = fs.readFileSync('../SSL/chain.pem', 'utf8');
-
-      const credentials = {
-        key: privateKey,
-        cert: certificate,
-        ca: ca
-      };
-      
-      server = https.Server(credentials, app);
-    } catch (error) {
-      console.log(error);
-    }
-    break;
-
-  default:
-    return;
-}
-
 require('./workers/SpeakerWorker').init();
-server.listen(process.env.PORT, process.env.HOST, () => {
+http.Server(app).listen(process.env.PORT, process.env.HOST, () => {
   console.info('[DNA-PushServer] Listening on port %s at %s', 
   process.env.PORT, process.env.HOST);
 });
